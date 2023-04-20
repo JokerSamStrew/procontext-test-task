@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"golang.org/x/text/encoding/charmap"
 )
@@ -19,10 +20,18 @@ type ValCurs struct {
 type Valute struct {
 	XMLName xml.Name `xml:"Valute"`
 	Name    string   `xml:"Name"`
+	Value   string   `xml:"Value"`
 }
 
+const (
+	DDMMYYYY = "02/01/2006"
+)
+
 func main() {
-	response, err := http.Get("http://www.cbr.ru/scripts/XML_daily_eng.asp?date_req=11/11/2020")
+	currentDate := time.Now().Local().AddDate(0, 0, -90)
+	fmt.Println(currentDate.Format(DDMMYYYY))
+
+	response, err := http.Get(fmt.Sprintf("http://www.cbr.ru/scripts/XML_daily_eng.asp?date_req=%v", currentDate.Format(DDMMYYYY)))
 	if err != nil {
 		log.Fatalf("failed send request: %v", err)
 	}
