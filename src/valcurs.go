@@ -40,7 +40,7 @@ func charsetReader(charset string, input io.Reader) (io.Reader, error) {
 func cbrRequest(date time.Time) ([]byte, error) {
 	const (
 		Attempts = 10
-		Delay    = 10
+		Delay    = 5
 	)
 
 	var err error
@@ -62,7 +62,7 @@ func cbrRequest(date time.Time) ([]byte, error) {
 			return b, nil
 		}
 
-		log.Printf("Attempt failed. Bad response Body: \n%v\n", string(b))
+		log.Printf("Attempt failed. Bad response Body: \n%v\n Try again after %v seconds...\n", string(b), Delay)
 		time.Sleep(Delay * time.Second)
 	}
 
